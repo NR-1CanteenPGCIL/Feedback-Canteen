@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>🍴 NR-1,RHQ,Canteen Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .rating-checkbox {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .rating-checkbox label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .rating-checkbox input {
+      display: none;
+    }
+
+    .circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      margin-bottom: 4px;
+      border: 2px solid #ccc;
+    }
+
+    /* Gradient scale colors */
+    .rating-checkbox label:nth-child(1) .circle {
+      background: #8B0000;
+    }
+
+    .rating-checkbox label:nth-child(2) .circle {
+      background: #B22222;
+    }
+
+    .rating-checkbox label:nth-child(3) .circle {
+      background: #DC143C;
+    }
+
+    .rating-checkbox label:nth-child(4) .circle {
+      background: #FF4500;
+    }
+
+    .rating-checkbox label:nth-child(5) .circle {
+      background: #FFA500;
+    }
+
+    .rating-checkbox label:nth-child(6) .circle {
+      background: #FFD700;
+    }
+
+    .rating-checkbox label:nth-child(7) .circle {
+      background: #9ACD32;
+    }
+
+    .rating-checkbox label:nth-child(8) .circle {
+      background: #32CD32;
+    }
+
+    .rating-checkbox label:nth-child(9) .circle {
+      background: #228B22;
+    }
+
+    .rating-checkbox label:nth-child(10) .circle {
+      background: #006400;
+    }
+
+    .rating-checkbox input:checked+.circle {
+      border: 3px solid #000;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 12px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #218838;
+    }
+
+    .canteen-img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .thank-you {
+      display: none;
+      text-align: center;
+      color: green;
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: #007bff;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .loading::after {
+      content: "⏳";
+      display: inline-block;
+      margin-left: 8px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .employee-options {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .employee-options input {
+      width: auto;
+      margin: 0;
+    }
+
+    .employee-options label {
+      margin: 0;
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>🍴 NR-1,RHQ,Canteen Feedback Form</h2>
+    <img src="Canteen Photo.jpg" alt="Canteen" class="canteen-img">
+
+    <form id="feedbackForm">
+      <label>Are you a PowerGrid Employee?</label>
+      <div class="employee-options">
+        <input type="radio" id="empYes" name="isEmployee" value="Yes" required>
+        <label for="empYes">Yes</label>
+        <input type="radio" id="empNo" name="isEmployee" value="No">
+        <label for="empNo">No</label>
+      </div>
+
+      <div id="empIdDiv" style="display:none;">
+        <label for="empIdInput">Employee ID (8 digits)</label>
+        <input type="text" id="empIdInput" name="empId" maxlength="8" pattern="\d{8}" title="Enter 8-digit Employee ID">
+      </div>
+
+      <label for="nameInput">Your Name</label>
+      <input type="text" id="nameInput" name="name" required>
+
+      <label for="emailInput">Email</label>
+      <input type="email" id="emailInput" name="email" required>
+
+      <label for="dateInput">Date & Time</label>
+      <input type="text" id="dateInput" name="date" readonly>
+
+      <label for="mealInput">Meal Taken</label>
+      <select id="mealInput" name="meal" required>
+        <option value="">-- Select Meal --</option>
+        <option>Breakfast</option>
+        <option>Lunch</option>
+        <option>Snacks</option>
+      </select>
+
+      <!-- Ratings -->
+      <label>Food Quality</label>
+      <div class="rating-checkbox">
+        <label><input type="radio" name="foodQuality" value="1" required><span class="circle"></span>1</label>
+        <label><input type="radio" name="foodQuality" value="2"><span class="circle"></span>2</label>
+        <label><input type="radio" name="foodQuality" value="3"><span class="circle"></span>3</label>
+        <label><input type="radio" name="foodQuality" value="4"><span class="circle"></span>4</label>
+        <label><input type="radio" name="foodQuality" value="5"><span class="circle"></span>5</label>
+        <label><input type="radio" name="foodQuality" value="6"><span class="circle"></span>6</label>
+        <label><input type="radio" name="foodQuality" value="7"><span class="circle"></span>7</label>
+        <label><input type="radio" name="foodQuality" value="8"><span class="circle"></span>8</label>
+        <label><input type="radio" name="foodQuality" value="9"><span class="circle"></span>9</label>
+        <label><input type="radio" name="foodQuality" value="10"><span class="circle"></span>10</label>
+      </div>
+
+      <label>Overall Service Quality</label>
+      <div class="rating-checkbox">
+        <label><input type="radio" name="serviceQuality" value="1" required><span class="circle"></span>1</label>
+        <label><input type="radio" name="serviceQuality" value="2"><span class="circle"></span>2</label>
+        <label><input type="radio" name="serviceQuality" value="3"><span class="circle"></span>3</label>
+        <label><input type="radio" name="serviceQuality" value="4"><span class="circle"></span>4</label>
+        <label><input type="radio" name="serviceQuality" value="5"><span class="circle"></span>5</label>
+        <label><input type="radio" name="serviceQuality" value="6"><span class="circle"></span>6</label>
+        <label><input type="radio" name="serviceQuality" value="7"><span class="circle"></span>7</label>
+        <label><input type="radio" name="serviceQuality" value="8"><span class="circle"></span>8</label>
+        <label><input type="radio" name="serviceQuality" value="9"><span class="circle"></span>9</label>
+        <label><input type="radio" name="serviceQuality" value="10"><span class="circle"></span>10</label>
+      </div>
+
+      <label>Cleanliness</label>
+      <div class="rating-checkbox">
+        <label><input type="radio" name="cleanliness" value="1" required><span class="circle"></span>1</label>
+        <label><input type="radio" name="cleanliness" value="2"><span class="circle"></span>2</label>
+        <label><input type="radio" name="cleanliness" value="3"><span class="circle"></span>3</label>
+        <label><input type="radio" name="cleanliness" value="4"><span class="circle"></span>4</label>
+        <label><input type="radio" name="cleanliness" value="5"><span class="circle"></span>5</label>
+        <label><input type="radio" name="cleanliness" value="6"><span class="circle"></span>6</label>
+        <label><input type="radio" name="cleanliness" value="7"><span class="circle"></span>7</label>
+        <label><input type="radio" name="cleanliness" value="8"><span class="circle"></span>8</label>
+        <label><input type="radio" name="cleanliness" value="9"><span class="circle"></span>9</label>
+        <label><input type="radio" name="cleanliness" value="10"><span class="circle"></span>10</label>
+      </div>
+
+      <label>Staff Behaviour</label>
+      <div class="rating-checkbox">
+        <label><input type="radio" name="staffBehaviour" value="1" required><span class="circle"></span>1</label>
+        <label><input type="radio" name="staffBehaviour" value="2"><span class="circle"></span>2</label>
+        <label><input type="radio" name="staffBehaviour" value="3"><span class="circle"></span>3</label>
+        <label><input type="radio" name="staffBehaviour" value="4"><span class="circle"></span>4</label>
+        <label><input type="radio" name="staffBehaviour" value="5"><span class="circle"></span>5</label>
+        <label><input type="radio" name="staffBehaviour" value="6"><span class="circle"></span>6</label>
+        <label><input type="radio" name="staffBehaviour" value="7"><span class="circle"></span>7</label>
+        <label><input type="radio" name="staffBehaviour" value="8"><span class="circle"></span>8</label>
+        <label><input type="radio" name="staffBehaviour" value="9"><span class="circle"></span>9</label>
+        <label><input type="radio" name="staffBehaviour" value="10"><span class="circle"></span>10</label>
+      </div>
+
+      <label>Overall Rating</label>
+      <div class="rating-checkbox">
+        <label><input type="radio" name="overallRating" value="1" required><span class="circle"></span>1</label>
+        <label><input type="radio" name="overallRating" value="2"><span class="circle"></span>2</label>
+        <label><input type="radio" name="overallRating" value="3"><span class="circle"></span>3</label>
+        <label><input type="radio" name="overallRating" value="4"><span class="circle"></span>4</label>
+        <label><input type="radio" name="overallRating" value="5"><span class="circle"></span>5</label>
+        <label><input type="radio" name="overallRating" value="6"><span class="circle"></span>6</label>
+        <label><input type="radio" name="overallRating" value="7"><span class="circle"></span>7</label>
+        <label><input type="radio" name="overallRating" value="8"><span class="circle"></span>8</label>
+        <label><input type="radio" name="overallRating" value="9"><span class="circle"></span>9</label>
+        <label><input type="radio" name="overallRating" value="10"><span class="circle"></span>10</label>
+      </div>
+
+      <label for="commentInput">Additional Comments (Optional)</label>
+      <textarea id="commentInput" name="comment" rows="3"></textarea>
+
+      <button type="submit" class="submit-btn">Submit Feedback</button>
+    </form>
+
+    <div class="loading">Submitting...</div>
+    <div class="thank-you">✅ Thanks for submitting your feedback!</div>
+  </div>
+
+  <script>
+    const empYes = document.getElementById('empYes');
+    const empNo = document.getElementById('empNo');
+    const empIdDiv = document.getElementById('empIdDiv');
+    const empIdInput = document.getElementById('empIdInput');
+
+    empYes.addEventListener('change', () => { empIdDiv.style.display = 'block'; empIdInput.required = true; });
+    empNo.addEventListener('change', () => { empIdDiv.style.display = 'none'; empIdInput.required = false; });
+
+    // Date with AM/PM
+    const dateInput = document.getElementById('dateInput');
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12; hours = hours ? hours : 12;
+    const day = now.getDate().toString().padStart(2, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear();
+    dateInput.value = `${day}-${month}-${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+
+    const form = document.getElementById('feedbackForm');
+    const thankYou = document.querySelector('.thank-you');
+    const submitBtn = document.querySelector('.submit-btn');
+    const loadingMsg = document.querySelector('.loading');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (empYes.checked && !/^\d{8}$/.test(empIdInput.value)) {
+        alert("Please enter valid 8-digit Employee ID.");
+        return;
+      }
+
+      loadingMsg.style.display = "block";
+      submitBtn.disabled = true;
+      document.body.style.cursor = "wait";
+      submitBtn.style.cursor = "wait";
+
+      const data = new FormData(form);
+
+      fetch("https://script.google.com/macros/s/AKfycbzkbvvehwZXYounxlUHn926XWstzvom447zAKHijfyLuP3YxeBtLKlc16Hn7PQX_CEheA/exec", {
+        method: "POST",
+        body: data
+      })
+        .then(res => res.json())
+        .then(response => {
+          form.style.display = "none";
+          loadingMsg.style.display = "none";
+          thankYou.style.display = "block";
+        })
+        .catch(err => { loadingMsg.style.display = "none"; alert("Error submitting feedback. Please try again."); })
+        .finally(() => {
+          document.body.style.cursor = "default";
+          submitBtn.disabled = false;
+          submitBtn.style.cursor = "pointer";
+        });
+    });
+  </script>
+</body>
+
+</html>
